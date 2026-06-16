@@ -1,8 +1,8 @@
 const navLinks = [
-  { label: "Intro", href: "#intro" },
-  { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
-  { label: "Contact", href: "#contact" },
+  { label: "Intro", href: "/#intro" },
+  { label: "About", href: "/#about" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export default function SiteNav() {
@@ -10,7 +10,7 @@ export default function SiteNav() {
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-white/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-[1100px] items-center justify-between px-6 py-4 md:px-10">
         <a
-          href="#intro"
+          href="/#intro"
           className="text-sm font-medium tracking-wide text-text-primary transition-colors hover:text-accent"
         >
           Diego

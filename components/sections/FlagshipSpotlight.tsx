@@ -28,7 +28,7 @@ export default function FlagshipSpotlight() {
           <p className="mt-4 text-lg leading-relaxed text-text-muted">{thesisVision.visionLine}</p>
           <p className="mt-3 text-sm text-text-muted">{thesisVision.technicalLine}</p>
           <Link
-            href="/thesis"
+            href="/thesis#demo"
             className="mt-8 inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
           >
             Explore system →
