@@ -1,4 +1,5 @@
 import { projects } from "@/data/projects";
+import { thesisVision } from "@/data/thesis/vision";
 
 export default function Home() {
   return (
@@ -11,9 +12,16 @@ export default function Home() {
         <p style={{ fontSize: "18px", color: "#444" }}>
           Data Science & AI student focused on machine learning systems and data-driven applications.
         </p>
+
+        <p style={{ fontSize: "16px", color: "#666", marginTop: "12px" }}>
+          {thesisVision.visionLine}
+        </p>
       </section>
 
       <section style={{ marginTop: "30px" }}>
+        <a href="/thesis" style={{ marginRight: "15px" }}>
+          Thesis system
+        </a>
         <a href="/projects" style={{ marginRight: "15px" }}>
           Projects
         </a>
