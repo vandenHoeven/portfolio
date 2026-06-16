@@ -7,11 +7,11 @@ const statusLabels: Record<ModuleStatus, string> = {
   planned: "Planned",
 };
 
-const statusStyles: Record<ModuleStatus, { backgroundColor: string; color: string }> = {
-  active: { backgroundColor: "#e6f4ea", color: "#1e7e34" },
-  in_development: { backgroundColor: "#fff3cd", color: "#856404" },
-  experimental: { backgroundColor: "#e8eaf6", color: "#3949ab" },
-  planned: { backgroundColor: "#f0f0f0", color: "#555" },
+const statusClasses: Record<ModuleStatus, string> = {
+  active: "bg-accent/20 text-accent",
+  in_development: "bg-yellow-500/20 text-yellow-300",
+  experimental: "bg-purple-500/20 text-purple-300",
+  planned: "bg-white/10 text-text-muted",
 };
 
 type ModuleCardProps = {
@@ -19,55 +19,33 @@ type ModuleCardProps = {
 };
 
 export default function ModuleCard({ module }: ModuleCardProps) {
-  const badgeStyle = statusStyles[module.status];
-
   const content = (
     <>
-      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
-        <strong style={{ fontSize: "18px" }}>{module.title}</strong>
+      <div className="mb-2 flex flex-wrap items-center gap-3">
+        <strong className="text-lg text-text-primary">{module.title}</strong>
         <span
-          style={{
-            display: "inline-block",
-            padding: "2px 8px",
-            fontSize: "12px",
-            borderRadius: "4px",
-            ...badgeStyle,
-          }}
+          className={`rounded px-2 py-0.5 text-xs font-medium ${statusClasses[module.status]}`}
         >
           {statusLabels[module.status]}
         </span>
       </div>
-      <p style={{ margin: 0, color: "#444" }}>{module.description}</p>
+      <p className="m-0 text-text-muted">{module.description}</p>
       {module.href && (
-        <p style={{ marginTop: "10px", marginBottom: 0, fontSize: "14px", color: "#0066cc" }}>
-          Open module →
-        </p>
+        <p className="mt-3 mb-0 text-sm text-accent">Open module →</p>
       )}
     </>
   );
 
-  const cardStyle = {
-    padding: "20px",
-    border: "1px solid #ddd",
-    borderRadius: "6px",
-    marginBottom: "16px",
-  };
+  const cardClass =
+    "mb-4 block rounded-xl border border-border bg-surface p-5 transition-colors hover:border-accent/30";
 
   if (module.href) {
     return (
-      <a
-        href={module.href}
-        style={{
-          ...cardStyle,
-          display: "block",
-          textDecoration: "none",
-          color: "inherit",
-        }}
-      >
+      <a href={module.href} className={`${cardClass} no-underline text-inherit`}>
         {content}
       </a>
     );
   }
 
-  return <div style={cardStyle}>{content}</div>;
+  return <div className={cardClass}>{content}</div>;
 }

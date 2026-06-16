@@ -3,28 +3,17 @@ import { thesisVision } from "@/data/thesis/vision";
 export default function Overview() {
   return (
     <section>
-      <div style={{ marginBottom: "12px" }}>
-        <span
-          style={{
-            display: "inline-block",
-            padding: "4px 10px",
-            fontSize: "13px",
-            borderRadius: "4px",
-            backgroundColor: "#f0f0f0",
-            color: "#555",
-          }}
-        >
-          {thesisVision.status}
-        </span>
-      </div>
+      <span className="inline-block rounded px-2.5 py-1 text-xs font-medium bg-white/10 text-text-muted">
+        {thesisVision.status}
+      </span>
 
-      <h1 style={{ fontSize: "42px", marginBottom: "10px" }}>{thesisVision.headline}</h1>
+      <h1 className="mt-4 mb-3 text-4xl font-semibold text-text-primary md:text-5xl">
+        {thesisVision.headline}
+      </h1>
 
-      <p style={{ fontSize: "18px", color: "#444", marginBottom: "12px" }}>
-        {thesisVision.visionLine}
-      </p>
+      <p className="text-lg text-text-muted mb-3">{thesisVision.visionLine}</p>
 
-      <p style={{ fontSize: "16px", color: "#666" }}>{thesisVision.technicalLine}</p>
+      <p className="text-base text-text-muted/80">{thesisVision.technicalLine}</p>
     </section>
   );
 }

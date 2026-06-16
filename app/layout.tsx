@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Diego Javier van den Hoeven",
+  title: "Diego Javier van den Hoeven | Data Science & AI",
   description:
-    "Data Science & AI student focused on machine learning systems and data-driven applications.",
+    "Data Science & AI student building machine learning systems, data pipelines, and interactive visualization.",
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full font-sans">{children}</body>
     </html>
   );
 }

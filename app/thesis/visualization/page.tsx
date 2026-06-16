@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import SiteShell from "@/components/layout/SiteShell";
 
 export const metadata: Metadata = {
   title: "Visualization | Thesis system",
@@ -7,46 +9,35 @@ export const metadata: Metadata = {
 
 export default function VisualizationPage() {
   return (
-    <main style={{ maxWidth: "700px", margin: "80px auto", fontFamily: "sans-serif" }}>
-      <a href="/thesis">← Thesis system</a>
+    <SiteShell>
+      <main className="py-24 md:py-32">
+        <Link
+          href="/thesis"
+          className="text-sm text-text-muted transition-colors hover:text-accent"
+        >
+          ← Thesis system
+        </Link>
 
-      <section style={{ marginTop: "30px" }}>
-        <div style={{ marginBottom: "12px" }}>
-          <span
-            style={{
-              display: "inline-block",
-              padding: "4px 10px",
-              fontSize: "13px",
-              borderRadius: "4px",
-              backgroundColor: "#e6f4ea",
-              color: "#1e7e34",
-            }}
-          >
+        <section className="mt-8">
+          <span className="inline-block rounded px-2.5 py-1 text-xs font-medium bg-accent/20 text-accent">
             Active module
           </span>
-        </div>
 
-        <h1 style={{ fontSize: "42px", marginBottom: "10px" }}>Interactive exploration layer</h1>
+          <h1 className="mt-4 mb-3 text-4xl font-semibold text-text-primary md:text-5xl">
+            Interactive exploration layer
+          </h1>
 
-        <p style={{ fontSize: "18px", color: "#444" }}>
-          The visualization tool for exploring news-driven insights. More features coming soon.
-        </p>
-      </section>
+          <p className="text-lg text-text-muted">
+            The visualization tool for exploring news-driven insights. More features coming soon.
+          </p>
+        </section>
 
-      <section style={{ marginTop: "40px" }}>
-        <div
-          style={{
-            border: "2px dashed #ccc",
-            borderRadius: "8px",
-            padding: "60px 20px",
-            textAlign: "center",
-            color: "#888",
-            backgroundColor: "#fafafa",
-          }}
-        >
-          Visualization tool will be embedded here
-        </div>
-      </section>
-    </main>
+        <section className="mt-10">
+          <div className="rounded-xl border-2 border-dashed border-border bg-surface px-5 py-16 text-center text-text-muted">
+            Visualization tool will be embedded here
+          </div>
+        </section>
+      </main>
+    </SiteShell>
   );
 }
