@@ -3,13 +3,16 @@
 import { useEffect, useRef } from "react";
 
 const CONFIG = {
-  nodeCount: 28,
+  baseNodeCount: 40,
+  minNodeCount: 28,
+  maxNodeCount: 58,
+  nodeCountReferenceArea: 960_000,
   linkDistance: 155,
   mouseLinkDistance: 175,
   mouseRepelRadius: 140,
   mouseRepelStrength: 0.55,
   directPushFactor: 4,
-  velocityDampingActive: 0.985,
+  velocityDampingActive: 0.993,
   velocityDampingAmbient: 0.998,
   velocityDampingRestore: 0.978,
   restoreDelayMs: 2800,
@@ -19,6 +22,7 @@ const CONFIG = {
   settleRate: 0.018,
   settleSpeedThreshold: 0.35,
   ambientDriftRate: 0.045,
+  ambientDriftRateActive: 0.035,
   edgeMargin: 20,
   edgePushStrength: 0.01,
   baseDriftMin: 0.18,
@@ -28,11 +32,13 @@ const CONFIG = {
   triangleFill: "rgba(105, 179, 162, 0.14)",
   triangleStroke: "rgba(100, 100, 100, 0.38)",
   maxSpeed: 1.1,
-  idleMaxSpeed: 0.55,
+  idleMaxSpeed: 0.65,
   triangleSize: 10,
   mouseLineOpacity: 0.45,
   mouseTriangleOpacity: 0.22,
   rotationSpeed: 0.003,
+  driftJitterIntervalMs: 2500,
+  driftJitterAngle: 0.04,
 };
 
 type Node = {
@@ -49,7 +55,6 @@ type Node = {
 };
 
 function randomBaseDrift() {
-  const sign = () => (Math.random() > 0.5 ? 1 : -1);
   const mag =
     CONFIG.baseDriftMin +
     Math.random() * (CONFIG.baseDriftMax - CONFIG.baseDriftMin);
@@ -57,8 +62,26 @@ function randomBaseDrift() {
   return { vx: Math.cos(angle) * mag, vy: Math.sin(angle) * mag };
 }
 
+function jitterBaseDrift(baseVx: number, baseVy: number) {
+  const speed = Math.hypot(baseVx, baseVy);
+  const angle =
+    Math.atan2(baseVy, baseVx) + (Math.random() - 0.5) * CONFIG.driftJitterAngle;
+  return { vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed };
+}
+
+function getNodeCount(width: number, height: number) {
+  const scale = Math.sqrt((width * height) / CONFIG.nodeCountReferenceArea);
+  return Math.round(
+    Math.min(
+      CONFIG.maxNodeCount,
+      Math.max(CONFIG.minNodeCount, CONFIG.baseNodeCount * scale),
+    ),
+  );
+}
+
 function createNodes(width: number, height: number): Node[] {
-  return Array.from({ length: CONFIG.nodeCount }, () => {
+  const count = getNodeCount(width, height);
+  return Array.from({ length: count }, () => {
     const x = Math.random() * width;
     const y = Math.random() * height;
     const { vx, vy } = randomBaseDrift();
@@ -137,6 +160,7 @@ export default function InteractiveNetworkBackground() {
   const reducedMotionRef = useRef(false);
   const visibleRef = useRef(true);
   const lastInteractionRef = useRef<number | null>(null);
+  const lastJitterRef = useRef(0);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -234,17 +258,43 @@ export default function InteractiveNetworkBackground() {
         }
       }
 
-      const isRestoring = restoreProgress > 0;
+      const isRestoring =
+        lastInteractionRef.current !== null &&
+        restoreProgress > 0 &&
+        restoreProgress < 1;
+      const isSettled =
+        lastInteractionRef.current !== null && restoreProgress >= 1 && !mouse.active;
+
       const damping = mouse.active
         ? CONFIG.velocityDampingActive
         : isRestoring
           ? CONFIG.velocityDampingRestore
           : CONFIG.velocityDampingAmbient;
 
+      if (
+        isSettled &&
+        now - lastJitterRef.current > CONFIG.driftJitterIntervalMs
+      ) {
+        lastJitterRef.current = now;
+        for (const node of nodes) {
+          if (distance(node.x, node.y, node.homeX, node.homeY) < 15) {
+            const drift = jitterBaseDrift(node.baseVx, node.baseVy);
+            node.baseVx = drift.vx;
+            node.baseVy = drift.vy;
+          }
+        }
+      }
+
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, width, height);
 
       for (const node of nodes) {
+        const driftRate = mouse.active
+          ? CONFIG.ambientDriftRateActive
+          : CONFIG.ambientDriftRate;
+        node.vx += (node.baseVx - node.vx) * driftRate;
+        node.vy += (node.baseVy - node.vy) * driftRate;
+
         if (mouse.active) {
           const dist = distance(node.x, node.y, mouse.x, mouse.y);
           if (dist < CONFIG.mouseRepelRadius && dist > 0) {
@@ -259,26 +309,21 @@ export default function InteractiveNetworkBackground() {
             node.y += ny * force * CONFIG.directPushFactor;
             lastInteractionRef.current = now;
           }
-        } else {
-          node.vx += (node.baseVx - node.vx) * CONFIG.ambientDriftRate;
-          node.vy += (node.baseVy - node.vy) * CONFIG.ambientDriftRate;
+        } else if (isRestoring) {
+          const homeDist = distance(node.x, node.y, node.homeX, node.homeY);
+          const speed = Math.hypot(node.vx, node.vy);
+          const baseSpring =
+            speed > CONFIG.settleSpeedThreshold
+              ? CONFIG.springStrengthBoost
+              : CONFIG.springStrength;
+          const spring = baseSpring * restoreProgress;
 
-          if (isRestoring) {
-            const homeDist = distance(node.x, node.y, node.homeX, node.homeY);
-            const speed = Math.hypot(node.vx, node.vy);
-            const baseSpring =
-              speed > CONFIG.settleSpeedThreshold
-                ? CONFIG.springStrengthBoost
-                : CONFIG.springStrength;
-            const spring = baseSpring * restoreProgress;
+          node.vx += (node.homeX - node.x) * spring;
+          node.vy += (node.homeY - node.y) * spring;
 
-            node.vx += (node.homeX - node.x) * spring;
-            node.vy += (node.homeY - node.y) * spring;
-
-            if (homeDist < 40 && speed < CONFIG.settleSpeedThreshold) {
-              node.vx += (node.baseVx - node.vx) * CONFIG.settleRate * restoreProgress;
-              node.vy += (node.baseVy - node.vy) * CONFIG.settleRate * restoreProgress;
-            }
+          if (homeDist < 40 && speed < CONFIG.settleSpeedThreshold) {
+            node.vx += (node.baseVx - node.vx) * CONFIG.settleRate * restoreProgress;
+            node.vy += (node.baseVy - node.vy) * CONFIG.settleRate * restoreProgress;
           }
         }
 

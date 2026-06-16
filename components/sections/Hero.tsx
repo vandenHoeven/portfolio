@@ -24,6 +24,12 @@ export default function Hero() {
             <p className="mt-6 max-w-lg text-lg leading-relaxed text-text-muted">
               {profile.tagline}
             </p>
+            <a
+              href="#contact"
+              className="mt-8 inline-block rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            >
+              Contact
+            </a>
           </div>
 
           <div className="flex justify-center md:justify-end">
