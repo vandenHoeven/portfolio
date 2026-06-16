@@ -7,7 +7,7 @@ const navLinks = [
 
 export default function SiteNav() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-bg-deep/80 backdrop-blur-md">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-white/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-[1100px] items-center justify-between px-6 py-4 md:px-10">
         <a
           href="#intro"

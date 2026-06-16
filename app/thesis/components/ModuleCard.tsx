@@ -8,10 +8,10 @@ const statusLabels: Record<ModuleStatus, string> = {
 };
 
 const statusClasses: Record<ModuleStatus, string> = {
-  active: "bg-accent/20 text-accent",
-  in_development: "bg-yellow-500/20 text-yellow-300",
-  experimental: "bg-purple-500/20 text-purple-300",
-  planned: "bg-white/10 text-text-muted",
+  active: "bg-teal-100 text-teal-800",
+  in_development: "bg-amber-100 text-amber-800",
+  experimental: "bg-purple-100 text-purple-800",
+  planned: "bg-slate-100 text-slate-600",
 };
 
 type ModuleCardProps = {

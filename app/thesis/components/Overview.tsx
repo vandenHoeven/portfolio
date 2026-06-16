@@ -3,7 +3,7 @@ import { thesisVision } from "@/data/thesis/vision";
 export default function Overview() {
   return (
     <section>
-      <span className="inline-block rounded px-2.5 py-1 text-xs font-medium bg-white/10 text-text-muted">
+      <span className="inline-block rounded px-2.5 py-1 text-xs font-medium bg-slate-100 text-slate-600">
         {thesisVision.status}
       </span>
 

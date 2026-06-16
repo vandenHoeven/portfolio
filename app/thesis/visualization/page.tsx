@@ -19,7 +19,7 @@ export default function VisualizationPage() {
         </Link>
 
         <section className="mt-8">
-          <span className="inline-block rounded px-2.5 py-1 text-xs font-medium bg-accent/20 text-accent">
+          <span className="inline-block rounded px-2.5 py-1 text-xs font-medium bg-teal-100 text-teal-800">
             Active module
           </span>
 
