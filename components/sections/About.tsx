@@ -45,7 +45,7 @@ export default function About() {
           {experience.map((entry) => (
             <div
               key={`${entry.year}-${entry.role}`}
-              className="min-w-[200px] rounded-xl border border-border bg-surface px-5 py-4"
+              className="min-w-[200px] rounded-xl border border-border bg-white px-5 py-4 shadow-sm"
             >
               <p className="text-sm font-medium text-accent">{entry.year}</p>
               <p className="mt-1 font-semibold text-text-primary">{entry.role}</p>

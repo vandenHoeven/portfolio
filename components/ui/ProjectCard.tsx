@@ -9,7 +9,7 @@ type ProjectCardProps = {
 export default function ProjectCard({ project }: ProjectCardProps) {
   const inner = (
     <>
-      <div className="relative mb-4 aspect-video overflow-hidden rounded-lg bg-surface">
+      <div className="relative mb-4 aspect-video overflow-hidden rounded-lg bg-bg-section">
         {project.image ? (
           <Image
             src={project.image}
@@ -47,7 +47,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   );
 
   const cardClass =
-    "block rounded-xl border border-border bg-surface p-5 transition-colors hover:border-accent/30 hover:bg-white/[0.06]";
+    "block rounded-xl border border-border bg-white p-5 shadow-sm transition-colors hover:border-accent/40 hover:shadow-md";
 
   if (project.href) {
     return (

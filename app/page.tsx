@@ -1,4 +1,5 @@
 import SiteNav from "@/components/layout/SiteNav";
+import SectionBand from "@/components/layout/SectionBand";
 import SiteShell from "@/components/layout/SiteShell";
 import About from "@/components/sections/About";
 import Contact from "@/components/sections/Contact";
@@ -10,13 +11,21 @@ export default function Home() {
   return (
     <>
       <SiteNav />
-      <SiteShell>
-        <Hero />
-        <About />
-        <FlagshipSpotlight />
-        <ProjectsSection />
-        <Contact />
-      </SiteShell>
+      <Hero />
+
+      <SectionBand variant="grey">
+        <SiteShell>
+          <About />
+          <FlagshipSpotlight />
+        </SiteShell>
+      </SectionBand>
+
+      <SectionBand variant="white">
+        <SiteShell>
+          <ProjectsSection />
+          <Contact />
+        </SiteShell>
+      </SectionBand>
     </>
   );
 }

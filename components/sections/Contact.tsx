@@ -12,7 +12,7 @@ export default function Contact() {
       <div className="flex flex-wrap gap-4">
         <a
           href={`mailto:${profile.email}`}
-          className="rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-bg-deep transition-opacity hover:opacity-90"
+          className="rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
         >
           Email me
         </a>

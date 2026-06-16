@@ -28,7 +28,7 @@ export default function ProjectsSection() {
             onClick={() => setActiveCategory(category)}
             className={`rounded-full px-4 py-1.5 text-sm transition-colors ${
               activeCategory === category
-                ? "bg-accent text-bg-deep font-medium"
+                ? "bg-accent font-medium text-white"
                 : "border border-border text-text-muted hover:border-accent/50 hover:text-accent"
             }`}
           >

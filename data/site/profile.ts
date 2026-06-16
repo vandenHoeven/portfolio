@@ -14,7 +14,7 @@ export const profile = {
   email: "you@email.com",
   github: "https://github.com/",
   cv: "/cv.pdf",
-  image: "/profile-placeholder.svg",
+  image: "/profile.png",
 };
 
 export const experience: ExperienceEntry[] = [

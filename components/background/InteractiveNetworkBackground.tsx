@@ -9,10 +9,8 @@ const CONFIG = {
   mouseRepelRadius: 100,
   mouseRepelStrength: 0.08,
   lineOpacity: 0.15,
-  triangleFill: "rgba(13, 148, 136, 0.06)",
-  triangleStroke: "rgba(100, 116, 139, 0.25)",
-  lineColor: "rgba(100, 116, 139, 0.15)",
-  mouseLineColor: "rgba(13, 148, 136, 0.2)",
+  triangleFill: "rgba(105, 179, 162, 0.08)",
+  triangleStroke: "rgba(120, 120, 120, 0.2)",
   minSpeed: 0.15,
   maxSpeed: 0.35,
   triangleSize: 10,
@@ -72,6 +70,7 @@ function drawTriangle(
 }
 
 export default function InteractiveNetworkBackground() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const nodesRef = useRef<Node[]>([]);
   const mouseRef = useRef<{ x: number; y: number; active: boolean }>({
@@ -81,10 +80,12 @@ export default function InteractiveNetworkBackground() {
   });
   const frameRef = useRef<number>(0);
   const reducedMotionRef = useRef(false);
+  const visibleRef = useRef(true);
 
   useEffect(() => {
+    const container = containerRef.current;
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!container || !canvas) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -92,42 +93,63 @@ export default function InteractiveNetworkBackground() {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     reducedMotionRef.current = mediaQuery.matches;
 
-    const handleMotionChange = (e: MediaQueryListEvent) => {
-      reducedMotionRef.current = e.matches;
-      if (e.matches) {
-        cancelAnimationFrame(frameRef.current);
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      } else {
-        animate();
-      }
-    };
-
-    mediaQuery.addEventListener("change", handleMotionChange);
-
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      if (nodesRef.current.length === 0) {
-        nodesRef.current = createNodes(canvas.width, canvas.height);
+      const { width, height } = container.getBoundingClientRect();
+      canvas.width = width;
+      canvas.height = height;
+      if (nodesRef.current.length === 0 && width > 0 && height > 0) {
+        nodesRef.current = createNodes(width, height);
       }
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY, active: true };
+      const rect = container.getBoundingClientRect();
+      mouseRef.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+        active: true,
+      };
     };
 
     const handleMouseLeave = () => {
       mouseRef.current.active = false;
     };
 
-    resize();
-    window.addEventListener("resize", resize);
-    window.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseleave", handleMouseLeave);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visibleRef.current = entry.isIntersecting;
+        if (!entry.isIntersecting) {
+          cancelAnimationFrame(frameRef.current);
+        } else if (!reducedMotionRef.current) {
+          animate();
+        }
+      },
+      { threshold: 0.05 },
+    );
+
+    observer.observe(container);
+
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(container);
+
+    const handleMotionChange = (e: MediaQueryListEvent) => {
+      reducedMotionRef.current = e.matches;
+      if (e.matches) {
+        cancelAnimationFrame(frameRef.current);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      } else if (visibleRef.current) {
+        animate();
+      }
+    };
+
+    mediaQuery.addEventListener("change", handleMotionChange);
+
+    container.addEventListener("mousemove", handleMouseMove);
+    container.addEventListener("mouseleave", handleMouseLeave);
 
     const animate = () => {
-      if (reducedMotionRef.current) return;
+      if (reducedMotionRef.current || !visibleRef.current) return;
 
       const { width, height } = canvas;
       const nodes = nodesRef.current;
@@ -182,7 +204,7 @@ export default function InteractiveNetworkBackground() {
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(100, 116, 139, ${alpha})`;
+            ctx.strokeStyle = `rgba(120, 120, 120, ${alpha})`;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
@@ -204,7 +226,7 @@ export default function InteractiveNetworkBackground() {
           ctx.beginPath();
           ctx.moveTo(mouse.x, mouse.y);
           ctx.lineTo(node.x, node.y);
-          ctx.strokeStyle = `rgba(13, 148, 136, ${alpha})`;
+          ctx.strokeStyle = `rgba(105, 179, 162, ${alpha})`;
           ctx.lineWidth = 1;
           ctx.stroke();
         }
@@ -216,7 +238,7 @@ export default function InteractiveNetworkBackground() {
             ctx.lineTo(nearest[i].node.x, nearest[i].node.y);
           }
           ctx.closePath();
-          ctx.strokeStyle = "rgba(13, 148, 136, 0.12)";
+          ctx.strokeStyle = "rgba(105, 179, 162, 0.12)";
           ctx.lineWidth = 1;
           ctx.stroke();
         }
@@ -229,8 +251,8 @@ export default function InteractiveNetworkBackground() {
       frameRef.current = requestAnimationFrame(animate);
     };
 
+    resize();
     if (reducedMotionRef.current) {
-      resize();
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     } else {
@@ -239,18 +261,17 @@ export default function InteractiveNetworkBackground() {
 
     return () => {
       cancelAnimationFrame(frameRef.current);
-      window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseleave", handleMouseLeave);
+      observer.disconnect();
+      resizeObserver.disconnect();
+      container.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("mouseleave", handleMouseLeave);
       mediaQuery.removeEventListener("change", handleMotionChange);
     };
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden
-      className="pointer-events-none fixed inset-0 z-0"
-    />
+    <div ref={containerRef} className="absolute inset-0 z-0" aria-hidden>
+      <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 h-full w-full" />
+    </div>
   );
 }

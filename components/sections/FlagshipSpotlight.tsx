@@ -8,8 +8,8 @@ export default function FlagshipSpotlight() {
 
   return (
     <section className="py-24">
-      <div className="grid items-center gap-10 rounded-2xl border border-border bg-surface p-8 md:grid-cols-2 md:p-12">
-        <div className="relative aspect-video overflow-hidden rounded-xl bg-bg-mid">
+      <div className="grid items-center gap-10 rounded-2xl border border-border bg-white p-8 shadow-md md:grid-cols-2 md:p-12">
+        <div className="relative aspect-video overflow-hidden rounded-xl border border-border bg-white">
           {flagship?.image && (
             <Image
               src={flagship.image}
@@ -29,7 +29,7 @@ export default function FlagshipSpotlight() {
           <p className="mt-3 text-sm text-text-muted">{thesisVision.technicalLine}</p>
           <Link
             href="/thesis"
-            className="mt-8 inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-bg-deep transition-opacity hover:opacity-90"
+            className="mt-8 inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
           >
             Explore system →
           </Link>
