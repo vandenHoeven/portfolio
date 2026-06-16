@@ -10,23 +10,29 @@ const CONFIG = {
   mouseRepelStrength: 0.55,
   directPushFactor: 4,
   velocityDampingActive: 0.985,
-  velocityDampingIdle: 0.96,
-  springStrength: 0.003,
-  springStrengthBoost: 0.006,
-  settleRate: 0.025,
+  velocityDampingAmbient: 0.998,
+  velocityDampingRestore: 0.978,
+  restoreDelayMs: 2800,
+  restoreRampMs: 4000,
+  springStrength: 0.0012,
+  springStrengthBoost: 0.0025,
+  settleRate: 0.018,
   settleSpeedThreshold: 0.35,
+  ambientDriftRate: 0.045,
   edgeMargin: 20,
   edgePushStrength: 0.01,
-  baseDriftMin: 0.08,
-  baseDriftMax: 0.28,
+  baseDriftMin: 0.18,
+  baseDriftMax: 0.42,
   lineOpacity: 0.38,
   lineWidth: 1.25,
   triangleFill: "rgba(105, 179, 162, 0.14)",
   triangleStroke: "rgba(100, 100, 100, 0.38)",
   maxSpeed: 1.1,
+  idleMaxSpeed: 0.55,
   triangleSize: 10,
   mouseLineOpacity: 0.45,
   mouseTriangleOpacity: 0.22,
+  rotationSpeed: 0.003,
 };
 
 type Node = {
@@ -130,6 +136,7 @@ export default function InteractiveNetworkBackground() {
   const frameRef = useRef<number>(0);
   const reducedMotionRef = useRef(false);
   const visibleRef = useRef(true);
+  const lastInteractionRef = useRef<number | null>(null);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -166,6 +173,9 @@ export default function InteractiveNetworkBackground() {
 
     const handleMouseMove = (e: MouseEvent) => {
       updateMouse(e.clientX, e.clientY);
+      if (mouseRef.current.active) {
+        lastInteractionRef.current = performance.now();
+      }
     };
 
     const handleMouseLeave = () => {
@@ -211,9 +221,25 @@ export default function InteractiveNetworkBackground() {
       const { width, height } = canvas;
       const nodes = nodesRef.current;
       const mouse = mouseRef.current;
+      const now = performance.now();
+
+      let restoreProgress = 0;
+      if (lastInteractionRef.current !== null) {
+        const elapsed = now - lastInteractionRef.current;
+        if (elapsed > CONFIG.restoreDelayMs) {
+          restoreProgress = Math.min(
+            1,
+            (elapsed - CONFIG.restoreDelayMs) / CONFIG.restoreRampMs,
+          );
+        }
+      }
+
+      const isRestoring = restoreProgress > 0;
       const damping = mouse.active
         ? CONFIG.velocityDampingActive
-        : CONFIG.velocityDampingIdle;
+        : isRestoring
+          ? CONFIG.velocityDampingRestore
+          : CONFIG.velocityDampingAmbient;
 
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, width, height);
@@ -231,21 +257,28 @@ export default function InteractiveNetworkBackground() {
             node.vy += ny * force;
             node.x += nx * force * CONFIG.directPushFactor;
             node.y += ny * force * CONFIG.directPushFactor;
+            lastInteractionRef.current = now;
           }
         } else {
-          const homeDist = distance(node.x, node.y, node.homeX, node.homeY);
-          const speed = Math.hypot(node.vx, node.vy);
-          const spring =
-            speed > CONFIG.settleSpeedThreshold
-              ? CONFIG.springStrengthBoost
-              : CONFIG.springStrength;
+          node.vx += (node.baseVx - node.vx) * CONFIG.ambientDriftRate;
+          node.vy += (node.baseVy - node.vy) * CONFIG.ambientDriftRate;
 
-          node.vx += (node.homeX - node.x) * spring;
-          node.vy += (node.homeY - node.y) * spring;
+          if (isRestoring) {
+            const homeDist = distance(node.x, node.y, node.homeX, node.homeY);
+            const speed = Math.hypot(node.vx, node.vy);
+            const baseSpring =
+              speed > CONFIG.settleSpeedThreshold
+                ? CONFIG.springStrengthBoost
+                : CONFIG.springStrength;
+            const spring = baseSpring * restoreProgress;
 
-          if (homeDist < 30 && speed < CONFIG.settleSpeedThreshold) {
-            node.vx += (node.baseVx - node.vx) * CONFIG.settleRate;
-            node.vy += (node.baseVy - node.vy) * CONFIG.settleRate;
+            node.vx += (node.homeX - node.x) * spring;
+            node.vy += (node.homeY - node.y) * spring;
+
+            if (homeDist < 40 && speed < CONFIG.settleSpeedThreshold) {
+              node.vx += (node.baseVx - node.vx) * CONFIG.settleRate * restoreProgress;
+              node.vy += (node.baseVy - node.vy) * CONFIG.settleRate * restoreProgress;
+            }
           }
         }
 
@@ -258,12 +291,13 @@ export default function InteractiveNetworkBackground() {
         applySoftEdges(node, width, height);
 
         const speed = Math.hypot(node.vx, node.vy);
-        if (speed > CONFIG.maxSpeed) {
-          node.vx = (node.vx / speed) * CONFIG.maxSpeed;
-          node.vy = (node.vy / speed) * CONFIG.maxSpeed;
+        const speedCap = mouse.active ? CONFIG.maxSpeed : CONFIG.idleMaxSpeed;
+        if (speed > speedCap) {
+          node.vx = (node.vx / speed) * speedCap;
+          node.vy = (node.vy / speed) * speedCap;
         }
 
-        node.rotation += 0.002;
+        node.rotation += CONFIG.rotationSpeed;
       }
 
       for (let i = 0; i < nodes.length; i++) {
