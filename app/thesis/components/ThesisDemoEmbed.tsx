@@ -3,10 +3,15 @@ import { thesisPage } from "@/data/thesis/page";
 export default function ThesisDemoEmbed() {
   const { demo } = thesisPage;
   const hasStreamlitUrl = demo.streamlitUrl.length > 0;
+  const embedUrl = hasStreamlitUrl
+    ? `${demo.streamlitUrl.replace(/\/$/, "")}?embed=true`
+    : "";
+  const scale = demo.embedScale ?? 1;
+  const visibleHeight = demo.embedHeight ?? "85vh";
 
   return (
     <section id="demo" className="scroll-mt-24 border-t border-border-strong bg-bg-hero">
-      <div className="mx-auto w-full max-w-[1100px] px-6 py-12 md:px-10 md:py-16">
+      <div className="mx-auto w-full max-w-[1100px] px-6 py-10 md:px-10 md:py-12">
         <h2 className="text-2xl font-semibold tracking-tight text-text-primary md:text-3xl">
           {demo.title}
         </h2>
@@ -17,11 +22,22 @@ export default function ThesisDemoEmbed() {
 
       <div className="border-y border-border-strong bg-white">
         {hasStreamlitUrl ? (
-          <iframe
-            src={demo.streamlitUrl}
-            title={demo.title}
-            className="h-[min(80vh,720px)] w-full border-0"
-          />
+          <div
+            className="relative w-full overflow-hidden"
+            style={{ height: visibleHeight }}
+          >
+            <iframe
+              src={embedUrl}
+              title={demo.title}
+              allow="fullscreen"
+              className="absolute left-0 top-0 origin-top-left border-0"
+              style={{
+                width: `${100 / scale}%`,
+                height: `calc(${visibleHeight} / ${scale})`,
+                transform: `scale(${scale})`,
+              }}
+            />
+          </div>
         ) : (
           <div className="flex min-h-[520px] items-center justify-center border-2 border-dashed border-border bg-surface/50 px-6 text-center text-text-muted">
             {demo.placeholderLabel}
@@ -31,6 +47,9 @@ export default function ThesisDemoEmbed() {
 
       {hasStreamlitUrl && (
         <div className="mx-auto w-full max-w-[1100px] px-6 py-4 md:px-10">
+          <p className="mb-2 text-xs text-text-muted">
+            For full-size controls, open in new tab.
+          </p>
           <a
             href={demo.streamlitUrl}
             target="_blank"

@@ -15,9 +15,12 @@ export const thesisPage = {
     title: "Interactive Simulation",
     description:
       "This system lets you explore news-driven policy dynamics over time. Adjust parameters, inspect predictions, and observe how different inputs affect outcomes.",
-    streamlitUrl: "",
+    streamlitUrl:
+      "https://drought-impact-classifier-demo-bfgevucqhgjtufbbglxydm.streamlit.app/",
     openInNewTabLabel: "Open in new tab",
     placeholderLabel: "Streamlit app will load here",
+    embedScale: 0.75,
+    embedHeight: "85vh",
   },
   demonstrates: {
     title: "What this demonstrates",
