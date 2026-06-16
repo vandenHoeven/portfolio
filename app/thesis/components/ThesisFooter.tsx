@@ -13,12 +13,12 @@ export default function ThesisFooter() {
           {footer.portfolioLabel}
         </a>
         <a
-          href={footer.githubHref}
+          href={footer.linkedinHref}
           target="_blank"
           rel="noopener noreferrer"
           className="rounded-lg border border-border px-5 py-2.5 text-sm text-text-muted transition-colors hover:border-accent/50 hover:text-accent"
         >
-          {footer.githubLabel}
+          {footer.linkedinLabel}
         </a>
       </div>
     </footer>

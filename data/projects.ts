@@ -5,7 +5,6 @@ export type Project = {
   category: string;
   flagship?: boolean;
   href?: string;
-  github?: string;
   live?: string;
   image?: string;
 };
@@ -26,7 +25,6 @@ export const projects: Project[] = [
     title: "Project 1",
     description: "Short description of what it does.",
     category: "ML",
-    github: "#",
     live: "#",
     image: "/projects/project-placeholder.svg",
   },
@@ -35,7 +33,6 @@ export const projects: Project[] = [
     title: "Project 2",
     description: "Short description of what it does.",
     category: "Dataviz",
-    github: "#",
     live: "#",
     image: "/projects/project-placeholder.svg",
   },
@@ -44,7 +41,6 @@ export const projects: Project[] = [
     title: "Project 3",
     description: "Short description of what it does.",
     category: "Data",
-    github: "#",
     image: "/projects/project-placeholder.svg",
   },
 ];

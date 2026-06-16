@@ -161,6 +161,7 @@ export default function InteractiveNetworkBackground() {
   const visibleRef = useRef(true);
   const lastInteractionRef = useRef<number | null>(null);
   const lastJitterRef = useRef(0);
+  const lastMousePosRef = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -204,6 +205,7 @@ export default function InteractiveNetworkBackground() {
 
     const handleMouseLeave = () => {
       mouseRef.current.active = false;
+      lastMousePosRef.current = null;
     };
 
     const observer = new IntersectionObserver(
@@ -258,14 +260,21 @@ export default function InteractiveNetworkBackground() {
         }
       }
 
+      const isPointerActive =
+        mouse.active &&
+        lastInteractionRef.current !== null &&
+        now - lastInteractionRef.current < CONFIG.restoreDelayMs;
+
       const isRestoring =
         lastInteractionRef.current !== null &&
         restoreProgress > 0 &&
         restoreProgress < 1;
       const isSettled =
-        lastInteractionRef.current !== null && restoreProgress >= 1 && !mouse.active;
+        lastInteractionRef.current !== null &&
+        restoreProgress >= 1 &&
+        !isPointerActive;
 
-      const damping = mouse.active
+      const damping = isPointerActive
         ? CONFIG.velocityDampingActive
         : isRestoring
           ? CONFIG.velocityDampingRestore
@@ -289,13 +298,18 @@ export default function InteractiveNetworkBackground() {
       ctx.fillRect(0, 0, width, height);
 
       for (const node of nodes) {
-        const driftRate = mouse.active
+        const driftRate = isPointerActive
           ? CONFIG.ambientDriftRateActive
           : CONFIG.ambientDriftRate;
         node.vx += (node.baseVx - node.vx) * driftRate;
         node.vy += (node.baseVy - node.vy) * driftRate;
 
-        if (mouse.active) {
+        if (isPointerActive) {
+          const mouseMoved =
+            !lastMousePosRef.current ||
+            mouse.x !== lastMousePosRef.current.x ||
+            mouse.y !== lastMousePosRef.current.y;
+
           const dist = distance(node.x, node.y, mouse.x, mouse.y);
           if (dist < CONFIG.mouseRepelRadius && dist > 0) {
             const falloff = (CONFIG.mouseRepelRadius - dist) / CONFIG.mouseRepelRadius;
@@ -307,7 +321,9 @@ export default function InteractiveNetworkBackground() {
             node.vy += ny * force;
             node.x += nx * force * CONFIG.directPushFactor;
             node.y += ny * force * CONFIG.directPushFactor;
-            lastInteractionRef.current = now;
+            if (mouseMoved) {
+              lastInteractionRef.current = now;
+            }
           }
         } else if (isRestoring) {
           const homeDist = distance(node.x, node.y, node.homeX, node.homeY);
@@ -336,13 +352,17 @@ export default function InteractiveNetworkBackground() {
         applySoftEdges(node, width, height);
 
         const speed = Math.hypot(node.vx, node.vy);
-        const speedCap = mouse.active ? CONFIG.maxSpeed : CONFIG.idleMaxSpeed;
+        const speedCap = isPointerActive ? CONFIG.maxSpeed : CONFIG.idleMaxSpeed;
         if (speed > speedCap) {
           node.vx = (node.vx / speed) * speedCap;
           node.vy = (node.vy / speed) * speedCap;
         }
 
         node.rotation += CONFIG.rotationSpeed;
+      }
+
+      if (mouse.active) {
+        lastMousePosRef.current = { x: mouse.x, y: mouse.y };
       }
 
       for (let i = 0; i < nodes.length; i++) {

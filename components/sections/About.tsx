@@ -17,12 +17,12 @@ export default function About() {
 
           <div className="mt-10 flex flex-wrap gap-4">
             <a
-              href={profile.github}
+              href={profile.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-lg border border-border px-4 py-2 text-sm text-text-muted transition-colors hover:border-accent/50 hover:text-accent"
             >
-              GitHub
+              LinkedIn
             </a>
             <a
               href={profile.cv}

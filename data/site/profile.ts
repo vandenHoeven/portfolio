@@ -11,8 +11,8 @@ export const profile = {
   role: "Data Science & AI student",
   tagline: "Building machine learning systems and data-driven applications.",
   bio: "I'm a Data Science & AI student focused on machine learning systems, data pipelines, and interactive visualization. I enjoy turning complex datasets into tools that help people explore and understand information — from research prototypes to production-ready applications.",
-  email: "you@email.com",
-  github: "https://github.com/",
+  email: "d.vandenhoeven@gmail.com",
+  linkedin: "https://www.linkedin.com/in/diego-van-den-hoeven/",
   cv: "/cv.pdf",
   image: "/profile.png",
 };

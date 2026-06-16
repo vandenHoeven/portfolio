@@ -33,14 +33,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       </span>
       <h3 className="mt-2 text-lg font-semibold text-text-primary">{project.title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-text-muted">{project.description}</p>
-      {(project.github || project.live) && (
+      {project.live && (
         <div className="mt-4 flex gap-4 text-sm">
-          {project.github && (
-            <span className="text-accent">GitHub</span>
-          )}
-          {project.live && (
-            <span className="text-accent">Live</span>
-          )}
+          <span className="text-accent">Live</span>
         </div>
       )}
     </>

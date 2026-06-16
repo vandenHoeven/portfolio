@@ -1,8 +1,5 @@
 import { profile } from "@/data/site/profile";
-import { projects } from "@/data/projects";
 import { thesisVision } from "@/data/thesis/vision";
-
-const flagship = projects.find((p) => p.flagship);
 
 export const thesisPage = {
   hero: {
@@ -65,7 +62,7 @@ export const thesisPage = {
   footer: {
     portfolioLabel: "← Back to portfolio",
     portfolioHref: "/",
-    githubLabel: "GitHub",
-    githubHref: flagship?.github ?? profile.github,
+    linkedinLabel: "LinkedIn",
+    linkedinHref: profile.linkedin,
   },
 };

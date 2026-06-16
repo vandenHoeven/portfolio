@@ -13,7 +13,7 @@ export default function SiteNav() {
           href="/#intro"
           className="text-sm font-medium tracking-wide text-text-primary transition-colors hover:text-accent"
         >
-          Diego
+          Home
         </a>
         <nav className="flex flex-wrap items-center justify-end gap-x-6 gap-y-2">
           {navLinks.map((link) => (
