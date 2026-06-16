@@ -1,24 +1,17 @@
-export type ExperienceEntry = {
-  year: string;
-  role: string;
-  organization: string;
-};
-
 export const profile = {
   firstName: "Diego",
   lastName: "van den Hoeven",
   fullName: "Diego Javier van den Hoeven",
-  role: "Data Science & AI student",
+  role: "Research Intern · Climate & Machine Learning",
   tagline: "Building machine learning systems and data-driven applications.",
-  bio: "I'm a Data Science & AI student focused on machine learning systems, data pipelines, and interactive visualization. I enjoy turning complex datasets into tools that help people explore and understand information — from research prototypes to production-ready applications.",
+  introParagraphs: [
+    "I build machine learning and LLM-based systems for real-world data problems, focusing on transforming unstructured data into usable signals through NLP pipelines and feature engineering.",
+    "My recent work includes drought impact prediction systems at Deltares and foundational work on predictive maintenance models using service text data at Kuijpers B.V.",
+    "I am currently completing an MSc in Data Science & AI at TU/e and actively looking for full-time roles.",
+    "I invite you to explore my projects to get a sense of the problems I work on, spanning applied machine learning, mathematics, and real-world decision support.",
+  ],
   email: "d.vandenhoeven@gmail.com",
   linkedin: "https://www.linkedin.com/in/diego-van-den-hoeven/",
   cv: "/cv.pdf",
   image: "/profile.png",
 };
-
-export const experience: ExperienceEntry[] = [
-  { year: "2024", role: "Data Science student", organization: "University" },
-  { year: "2025", role: "ML systems project", organization: "Thesis research" },
-  { year: "2026", role: "Policy decision support", organization: "Thesis system" },
-];

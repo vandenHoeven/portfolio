@@ -1,4 +1,5 @@
 import { profile } from "@/data/site/profile";
+import CopyEmailButton from "@/components/ui/CopyEmailButton";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 export default function Contact() {
@@ -9,13 +10,10 @@ export default function Contact() {
         subtitle="Open to opportunities, collaborations, and conversations about data science and ML systems."
       />
 
+      <p className="mb-6 text-lg font-medium text-text-primary">{profile.email}</p>
+
       <div className="flex flex-wrap gap-4">
-        <a
-          href={`mailto:${profile.email}`}
-          className="rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-        >
-          Email me
-        </a>
+        <CopyEmailButton email={profile.email} primary />
         <a
           href={profile.linkedin}
           target="_blank"

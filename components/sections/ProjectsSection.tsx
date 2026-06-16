@@ -6,18 +6,17 @@ import ProjectCard from "@/components/ui/ProjectCard";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 export default function ProjectsSection() {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState("ML Systems");
 
   const filtered = projects.filter(
-    (p) =>
-      !p.flagship && (activeCategory === "All" || p.category === activeCategory),
+    (p) => activeCategory === "All" || p.category === activeCategory,
   );
 
   return (
     <section id="projects" className="py-24">
       <SectionHeading
         title="Projects"
-        subtitle="A glimpse of the work I've been building — from thesis research to side projects."
+        subtitle="A living portfolio — new project write-ups are added as they ship."
       />
 
       <div className="mb-10 flex flex-wrap gap-3">

@@ -15,7 +15,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             src={project.image}
             alt={project.title}
             fill
-            className="object-cover opacity-80"
+            className={`object-cover ${project.comingSoon ? "opacity-60" : "opacity-80"}`}
           />
         ) : (
           <div className="flex h-full items-center justify-center text-sm text-text-muted">
@@ -27,13 +27,18 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             Flagship
           </span>
         )}
+        {project.comingSoon && (
+          <span className="absolute top-3 left-3 rounded-full bg-border px-3 py-1 text-xs font-medium text-text-muted">
+            Coming soon
+          </span>
+        )}
       </div>
       <span className="text-xs font-medium uppercase tracking-wider text-accent">
         {project.category}
       </span>
       <h3 className="mt-2 text-lg font-semibold text-text-primary">{project.title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-text-muted">{project.description}</p>
-      {project.live && (
+      {project.live && !project.comingSoon && (
         <div className="mt-4 flex gap-4 text-sm">
           <span className="text-accent">Live</span>
         </div>
@@ -41,10 +46,11 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     </>
   );
 
-  const cardClass =
-    "block rounded-xl border border-border bg-white p-5 shadow-sm transition-colors hover:border-accent/40 hover:shadow-md";
+  const cardClass = project.comingSoon
+    ? "block cursor-default rounded-xl border border-border bg-white p-5 opacity-90 shadow-sm"
+    : "block rounded-xl border border-border bg-white p-5 shadow-sm transition-colors hover:border-accent/40 hover:shadow-md";
 
-  if (project.href) {
+  if (project.href && !project.comingSoon) {
     return (
       <Link href={project.href} className={cardClass}>
         {inner}

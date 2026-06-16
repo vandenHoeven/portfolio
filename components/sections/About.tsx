@@ -1,5 +1,8 @@
 import Image from "next/image";
-import { experience, profile } from "@/data/site/profile";
+import CopyEmailButton from "@/components/ui/CopyEmailButton";
+import HorizontalTimeline from "@/components/ui/HorizontalTimeline";
+import { profile } from "@/data/site/profile";
+import { timeline } from "@/data/site/timeline";
 
 export default function About() {
   return (
@@ -13,7 +16,11 @@ export default function About() {
           <h2 className="text-3xl font-semibold text-text-primary md:text-4xl">
             Hi, I&apos;m {profile.firstName}.
           </h2>
-          <p className="mt-6 text-lg leading-relaxed text-text-muted">{profile.bio}</p>
+          <div className="mt-6 space-y-4 text-base leading-relaxed text-text-muted">
+            {profile.introParagraphs.map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
+          </div>
 
           <div className="mt-10 flex flex-wrap gap-4">
             <a
@@ -30,29 +37,14 @@ export default function About() {
             >
               CV
             </a>
-            <a
-              href={`mailto:${profile.email}`}
-              className="rounded-lg border border-border px-4 py-2 text-sm text-text-muted transition-colors hover:border-accent/50 hover:text-accent"
-            >
-              Email
-            </a>
+            <CopyEmailButton email={profile.email} compact />
           </div>
         </div>
       </div>
 
-      <div className="mt-16 overflow-x-auto">
-        <div className="flex min-w-max gap-6">
-          {experience.map((entry) => (
-            <div
-              key={`${entry.year}-${entry.role}`}
-              className="min-w-[200px] rounded-xl border border-border bg-white px-5 py-4 shadow-sm"
-            >
-              <p className="text-sm font-medium text-accent">{entry.year}</p>
-              <p className="mt-1 font-semibold text-text-primary">{entry.role}</p>
-              <p className="mt-1 text-sm text-text-muted">{entry.organization}</p>
-            </div>
-          ))}
-        </div>
+      <div className="mt-16">
+        <h3 className="mb-8 text-xl font-semibold text-text-primary">Background</h3>
+        <HorizontalTimeline entries={timeline} />
       </div>
     </section>
   );
