@@ -11,7 +11,7 @@ export const pipelineStages: PipelineStage[] = [
     label: "News Article Collection",
     description: "Large-scale drought-related news articles collected via web scraping",
     details: [
-      "Articles are collected using a web scraper targeting drought-related keywords",
+      "Articles (20k spanning 2005-2026) are collected using a web scraper targeting drought-related keywords",
       "Time metadata is preserved for temporal analysis"
     ],
   },
@@ -31,7 +31,6 @@ export const pipelineStages: PipelineStage[] = [
     details: [
       "Convert textual location mentions into geospatial representations (coordinates + administrative identifiers)",
       "Assign mentions to NUTS3 regions using gazetteer matching, name-based rules, and polygon-based validation",
-      "Apply weighted attribution for broad or multi-region references",
     ],
   },
   {
@@ -39,17 +38,16 @@ export const pipelineStages: PipelineStage[] = [
     label: "Climate & Regional Data",
     description: "Enrich impact signals with environmental covariates",
     details: [
-      "Combine climate indicators with regional context",
-      "Create integrated feature sets for risk estimation",
+      "Combine climate indicators (rain, evaporation, groundwater levels)",
+      "Combine regional data (house pricing, population density, soil type)",
     ],
   },
   {
     id: "prediction",
     label: "Random Forest Prediction",
-    description: "Estimate future drought impact risk by region",
+    description: "Predict future drought impacts by region",
     details: [
-      "Use integrated signals to predict impact risk trajectories",
-      "Support comparative scenario analysis across regions",
+      "Predict future drought impacts by region using a Random Forest model",
     ],
   },
   {
@@ -57,8 +55,9 @@ export const pipelineStages: PipelineStage[] = [
     label: "Interactive Decision Support",
     description: "Provide evidence-focused exploration for policy users",
     details: [
-      "Visualize model outputs alongside extracted evidence",
-      "Enable exploration of regional and temporal risk patterns",
+      "Visualize extracted impact data alongside supporting evidence from source articles",
+      "Support inspection of geocoded impacts, regional assignments, and temporal patterns",
+      "Prediction Mode (to be added)",
     ],
   },
 ];

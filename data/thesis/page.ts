@@ -38,12 +38,12 @@ export const thesisPage = {
       {
         title: "Spatial Intelligence",
         description:
-          "Map extracted impacts to NUTS3 regions using geographic and topological aggregation methods.",
+          "Map extracted impacts to NUTS3 regions using geographic and topological methods.",
       },
       {
-        title: "Risk Modeling",
+        title: "Impact Prediction",
         description:
-          "Combine news-derived signals with climate and regional variables to estimate future impact risk.",
+          "Combine news-derived signals with climate and regional variables to predict future drought-related impacts.",
       },
       {
         title: "Decision Support",
@@ -55,9 +55,9 @@ export const thesisPage = {
   whyNewsData: {
     title: "Why News Data?",
     intro:
-      "Traditional drought monitoring relies on environmental measurements such as precipitation, groundwater, and temperature.",
+      "Traditional drought monitoring relies on environmental measurements such as precipitation, groundwater levels, and temperature.",
     explanation:
-      "This project explores whether societal impacts reported in news media can be transformed into structured signals and used alongside climate indicators to better understand emerging drought risks.",
+      "This system uses news media as an additional signal to capture societal and economic drought impacts, helping policy makers understand emerging impacts and inform future drought-related policies.",
   },
   architecture: {
     title: "System Architecture",

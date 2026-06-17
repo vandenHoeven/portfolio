@@ -77,6 +77,6 @@ export const timeline: TimelineEntry[] = [
     type: "work",
     title: "Research Intern",
     organization: "Deltares",
-    summary: "NLP/ML for climate risk and drought impact",
+    summary: "NLP/ML for climate and drought impact prediction",
   },
 ];
