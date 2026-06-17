@@ -1,12 +1,14 @@
 export const thesisVision = {
   label: "Flagship Project",
-  headline: "Policy Decision Support System for Drought Impact Risk",
+  headline: "From News to Drought Impact Intelligence",
   visionLine:
-    "A news-driven decision support system designed to assist policy makers in exploring drought-related risk scenarios and supporting evidence-based decisions in the Netherlands.",
+    "A research prototype that transforms thousands of news articles into geographically structured impact signals, helping identify and forecast drought-related risks across the Netherlands.",
   pipelineIntro: "The system follows a modular pipeline:",
   pipelineSteps: [
     "Ingestion of large-scale news data (~20k articles)",
     "NLP and LLM-based feature extraction",
+    "Impacts are geographically mapped to NUTS3 regions",
+    "Climate and regional variables are integrated",
     "Supervised machine learning for impact risk prediction (Random Forest)",
     "Interactive visualization layer for scenario exploration and decision support",
   ],

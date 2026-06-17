@@ -11,16 +11,28 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     <>
       <div
         className={`relative mb-4 overflow-hidden rounded-lg bg-white ${
-          project.flagship ? "aspect-[4/5]" : "aspect-video"
+          project.flagship ? "flex items-center justify-center p-4" : "aspect-video"
         }`}
       >
         {project.image ? (
-          <Image
-            src={project.image}
-            alt={project.title}
-            fill
-            className={`${project.flagship ? "object-contain object-center" : "object-cover"} ${project.comingSoon ? "opacity-60" : "opacity-80"}`}
-          />
+          project.flagship ? (
+            <Image
+              src={project.image}
+              alt={project.title}
+              width={project.imageWidth ?? 507}
+              height={project.imageHeight ?? 514}
+              sizes={`${project.imageCardMaxWidth ?? project.imageMaxWidth ?? 200}px`}
+              className="h-auto w-full"
+              style={{ maxWidth: project.imageCardMaxWidth ?? project.imageMaxWidth ?? 200 }}
+            />
+          ) : (
+            <Image
+              src={project.image}
+              alt={project.title}
+              fill
+              className={`object-cover ${project.comingSoon ? "opacity-60" : "opacity-80"}`}
+            />
+          )
         ) : (
           <div className="flex h-full items-center justify-center text-sm text-text-muted">
             Preview

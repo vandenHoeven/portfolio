@@ -18,6 +18,20 @@ export default function ThesisDemoEmbed() {
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-text-muted">
           {demo.description}
         </p>
+        <p className="mt-5 text-sm font-medium text-text-primary">Features include:</p>
+        <ul className="mt-2 space-y-2 text-sm text-text-muted">
+          {demo.features.map((feature) => (
+            <li key={feature} className="flex gap-2">
+              <span className="text-accent" aria-hidden>
+                •
+              </span>
+              {feature}
+            </li>
+          ))}
+        </ul>
+        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted">
+          {demo.statusNote}
+        </p>
       </div>
 
       <div className="mx-auto w-full max-w-[1100px] px-6 pb-10 md:px-10 md:pb-12">

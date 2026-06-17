@@ -4,10 +4,10 @@ import SiteShell from "@/components/layout/SiteShell";
 import ThesisArchitecture from "./components/ThesisArchitecture";
 import ThesisDemoEmbed from "./components/ThesisDemoEmbed";
 import ThesisDemonstrates from "./components/ThesisDemonstrates";
-import ThesisDesignDecisions from "./components/ThesisDesignDecisions";
 import ThesisFooter from "./components/ThesisFooter";
 import ThesisHero from "./components/ThesisHero";
 import ThesisLimitations from "./components/ThesisLimitations";
+import ThesisWhyNewsData from "./components/ThesisWhyNewsData";
 
 export default function ThesisPage() {
   return (
@@ -15,23 +15,21 @@ export default function ThesisPage() {
       <SiteNav />
 
       <SectionBand variant="white">
-        <SiteShell>
-          <ThesisHero />
-        </SiteShell>
+        <ThesisHero />
       </SectionBand>
 
       <ThesisDemoEmbed />
 
       <SectionBand variant="grey">
         <SiteShell>
-          <ThesisDemonstrates />
-          <ThesisDesignDecisions />
+          <ThesisArchitecture />
         </SiteShell>
       </SectionBand>
 
       <SectionBand variant="white">
         <SiteShell>
-          <ThesisArchitecture />
+          <ThesisWhyNewsData />
+          <ThesisDemonstrates />
         </SiteShell>
       </SectionBand>
 

@@ -9,14 +9,16 @@ export default function FlagshipSpotlight() {
   return (
     <section className="py-24">
       <div className="grid items-center gap-10 rounded-2xl border border-border bg-white p-8 shadow-md md:grid-cols-2 md:p-12">
-        <div className="overflow-hidden rounded-xl border border-border bg-white">
+        <div className="flex justify-center overflow-hidden rounded-xl border border-border bg-white p-6 md:p-8">
           {flagship?.image && (
             <Image
               src={flagship.image}
               alt={flagship.title}
-              width={800}
-              height={1000}
+              width={flagship.imageWidth ?? 507}
+              height={flagship.imageHeight ?? 514}
+              sizes={`${flagship.imageMaxWidth ?? 280}px`}
               className="h-auto w-full"
+              style={{ maxWidth: flagship.imageMaxWidth ?? 280 }}
               priority
             />
           )}

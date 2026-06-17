@@ -8,14 +8,14 @@ export default function ThesisDemonstrates() {
       <h2 className="text-xl font-semibold text-text-primary md:text-2xl">
         {demonstrates.title}
       </h2>
-      <ul className="mt-6 space-y-3 text-sm leading-relaxed text-text-muted md:text-base">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2">
         {demonstrates.items.map((item) => (
-          <li key={item} className="flex gap-3">
-            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
-            {item}
-          </li>
+          <article key={item.title} className="rounded-lg border border-border bg-white p-4">
+            <h3 className="text-sm font-semibold text-text-primary md:text-base">{item.title}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-text-muted">{item.description}</p>
+          </article>
         ))}
-      </ul>
+      </div>
     </section>
   );
 }

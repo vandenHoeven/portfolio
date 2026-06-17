@@ -8,6 +8,10 @@ export type Project = {
   href?: string;
   live?: string;
   image?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+  imageMaxWidth?: number;
+  imageCardMaxWidth?: number;
 };
 
 export const projectCategories = [
@@ -28,6 +32,10 @@ export const projects: Project[] = [
     flagship: true,
     href: "/thesis",
     image: "/projects/drought-impact-demo.png",
+    imageWidth: 507,
+    imageHeight: 514,
+    imageMaxWidth: 280,
+    imageCardMaxWidth: 200,
   },
   {
     id: "llm-model-project",

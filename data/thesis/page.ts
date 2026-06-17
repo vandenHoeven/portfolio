@@ -5,13 +5,21 @@ export const thesisPage = {
   hero: {
     title: thesisVision.headline,
     tagline: thesisVision.visionLine,
-    ctaLabel: "Explore Interactive Demo",
+    ctaLabel: "Explore system",
     ctaHref: "#demo",
   },
   demo: {
-    title: "Interactive Simulation",
+    title: "Research Prototype",
     description:
-      "This system lets you explore news-driven policy dynamics over time. Adjust parameters, inspect predictions, and observe how different inputs affect outcomes.",
+      "This interactive environment demonstrates the current state of the system.",
+    features: [
+      "Impact exploration",
+      "Geographic mapping",
+      "News-derived impact signals",
+      "Regional aggregation",
+    ],
+    statusNote:
+      "Forecasting and UI components are currently under development.",
     streamlitUrl:
       "https://drought-impact-classifier-demo-bfgevucqhgjtufbbglxydm.streamlit.app/",
     openInNewTabLabel: "Open in new tab",
@@ -20,43 +28,56 @@ export const thesisPage = {
     embedHeight: "85vh",
   },
   demonstrates: {
-    title: "What this demonstrates",
+    title: "Core Capabilities",
     items: [
-      "Time-series modeling for news and environmental signals",
-      "Structured feature engineering from heterogeneous data sources",
-      "Classification system design for real-world uncertainty",
-      "Interactive exploration of model outputs over time",
-      "System thinking across data, model, and interface layers",
+      {
+        title: "News Mining",
+        description:
+          "Extract drought-related impacts from large collections of unstructured news articles using LLMs.",
+      },
+      {
+        title: "Spatial Intelligence",
+        description:
+          "Map extracted impacts to NUTS3 regions using geographic and topological aggregation methods.",
+      },
+      {
+        title: "Risk Modeling",
+        description:
+          "Combine news-derived signals with climate and regional variables to estimate future impact risk.",
+      },
+      {
+        title: "Decision Support",
+        description:
+          "Surface complex environmental information through interactive visual analytics.",
+      },
     ],
   },
-  designDecisions: {
-    title: "Design decisions",
-    items: [
-      "Streamlit chosen for rapid interactive prototyping",
-      "Modular pipeline to separate experimentation from interface",
-      "Visualization layer decoupled from model training for flexibility",
-      "Designed for extensibility into real-time policy simulation",
-    ],
+  whyNewsData: {
+    title: "Why News Data?",
+    intro:
+      "Traditional drought monitoring relies on environmental measurements such as precipitation, groundwater, and temperature.",
+    explanation:
+      "This project explores whether societal impacts reported in news media can be transformed into structured signals and used alongside climate indicators to better understand emerging drought risks.",
   },
   architecture: {
     title: "System Architecture",
     intro:
-      "The system is built as a modular pipeline: Data ingestion → Processing → Prediction → Visualization",
+      "The system is organized as a news-to-impact intelligence pipeline: 20k News Articles → LLM Impact Extraction → Spatial Aggregation (NUTS3) → Climate & Regional Data → Random Forest Prediction → Interactive Decision Support.",
   },
-  limitations: {
-    title: "Limitations",
-    items: [
-      "Forecasting layer is experimental",
-      "Data sources are not fully real-time integrated",
-      "Model uncertainty visualization is still basic",
+  currentStatus: {
+    title: "Current Development Status",
+    completed: [
+      "News ingestion pipeline",
+      "LLM-based impact extraction",
+      "Geographic impact mapping",
+      "Interactive exploration dashboard (UI upgrade planned)",
     ],
-  },
-  futureWork: {
-    title: "Future work",
-    items: [
-      "Real-time ingestion pipeline",
-      "Scenario-based policy simulation layer",
-      "Improved uncertainty quantification",
+    inProgress: [
+      "Forecasting integration",
+      "Policy simulation layer",
+    ],
+    planned: [
+      "Advanced uncertainty visualization",
     ],
   },
   footer: {

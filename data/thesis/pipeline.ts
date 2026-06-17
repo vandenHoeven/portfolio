@@ -7,39 +7,58 @@ export type PipelineStage = {
 
 export const pipelineStages: PipelineStage[] = [
   {
-    id: "ingest",
-    label: "Data ingestion",
-    description: "News and external sources enter here",
+    id: "news",
+    label: "News Article Collection",
+    description: "Large-scale drought-related news articles collected via web scraping",
     details: [
-      "News and external datasets collected from public sources",
-      "Structured storage for downstream processing",
+      "Articles are collected using a web scraper targeting drought-related keywords",
+      "Time metadata is preserved for temporal analysis"
     ],
   },
   {
-    id: "process",
-    label: "Processing",
-    description: "NLP and feature extraction",
+    id: "llm-extraction",
+    label: "LLM Impact Extraction",
+    description: "Classify and extract impact signals from news articles using LLMs",
     details: [
-      "NLP and feature extraction from unstructured text",
-      "Normalization and transformation into model-ready signals",
+      "Classify articles into multiple drought impact categories (e.g., agricultural loss, groundwater depletion, water supply issues, etc.)",
+      "Extract severity signals, location mentions, and supporting evidence from text",
     ],
   },
   {
-    id: "predict",
-    label: "Prediction",
-    description: "Forecasting layer (experimental)",
+    id: "spatial",
+    label: "Spatial Aggregation (NUTS3)",
+    description: "Map extracted signals to geographic regions",
     details: [
-      "Forecasting and classification layer for scenario exploration",
-      "Experimental simulation of policy-relevant outcomes",
+      "Convert textual location mentions into geospatial representations (coordinates + administrative identifiers)",
+      "Assign mentions to NUTS3 regions using gazetteer matching, name-based rules, and polygon-based validation",
+      "Apply weighted attribution for broad or multi-region references",
     ],
   },
   {
-    id: "viz",
-    label: "Visualization",
-    description: "Interactive exploration for users",
+    id: "climate-regional",
+    label: "Climate & Regional Data",
+    description: "Enrich impact signals with environmental covariates",
     details: [
-      "Streamlit-based interactive exploration layer",
-      "Decoupled from training for rapid iteration",
+      "Combine climate indicators with regional context",
+      "Create integrated feature sets for risk estimation",
+    ],
+  },
+  {
+    id: "prediction",
+    label: "Random Forest Prediction",
+    description: "Estimate future drought impact risk by region",
+    details: [
+      "Use integrated signals to predict impact risk trajectories",
+      "Support comparative scenario analysis across regions",
+    ],
+  },
+  {
+    id: "decision-support",
+    label: "Interactive Decision Support",
+    description: "Provide evidence-focused exploration for policy users",
+    details: [
+      "Visualize model outputs alongside extracted evidence",
+      "Enable exploration of regional and temporal risk patterns",
     ],
   },
 ];
