@@ -27,7 +27,7 @@ export const projects: Project[] = [
     category: "ML Systems",
     flagship: true,
     href: "/thesis",
-    image: "/projects/thesis-placeholder.svg",
+    image: "/projects/drought-impact-demo.png",
   },
   {
     id: "llm-model-project",

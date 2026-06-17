@@ -13,7 +13,12 @@ export default function Overview() {
 
       <p className="text-lg text-text-muted mb-3">{thesisVision.visionLine}</p>
 
-      <p className="text-base text-text-muted/80">{thesisVision.technicalLine}</p>
+      <p className="text-base font-medium text-text-primary">{thesisVision.pipelineIntro}</p>
+      <ul className="mt-2 list-inside list-disc space-y-1 text-base text-text-muted/80">
+        {thesisVision.pipelineSteps.map((step) => (
+          <li key={step}>{step}</li>
+        ))}
+      </ul>
     </section>
   );
 }

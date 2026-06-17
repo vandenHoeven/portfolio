@@ -9,13 +9,17 @@ type ProjectCardProps = {
 export default function ProjectCard({ project }: ProjectCardProps) {
   const inner = (
     <>
-      <div className="relative mb-4 aspect-video overflow-hidden rounded-lg bg-bg-section">
+      <div
+        className={`relative mb-4 overflow-hidden rounded-lg bg-white ${
+          project.flagship ? "aspect-[4/5]" : "aspect-video"
+        }`}
+      >
         {project.image ? (
           <Image
             src={project.image}
             alt={project.title}
             fill
-            className={`object-cover ${project.comingSoon ? "opacity-60" : "opacity-80"}`}
+            className={`${project.flagship ? "object-contain object-center" : "object-cover"} ${project.comingSoon ? "opacity-60" : "opacity-80"}`}
           />
         ) : (
           <div className="flex h-full items-center justify-center text-sm text-text-muted">
